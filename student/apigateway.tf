@@ -26,6 +26,7 @@ resource "aws_api_gateway_method" "query_post" {
   resource_id   = aws_api_gateway_resource.query.id
   http_method   = "POST"
   authorization = "NONE"
+  #authorization = "AWS_IAM"
 }
 
 # Integración con Lambda
@@ -53,6 +54,14 @@ resource "aws_api_gateway_method_response" "query_response_200" {
 # Deployment del API
 resource "aws_api_gateway_deployment" "query_deployment" {
   rest_api_id = aws_api_gateway_rest_api.query_api.id
+
+  triggers = {
+    redeployment = sha1(jsonencode([
+      aws_api_gateway_resource.query.id,
+      aws_api_gateway_method.query_post.id,
+      aws_api_gateway_integration.lambda_integration.id,
+    ]))
+  }
 
   depends_on = [
     aws_api_gateway_integration.lambda_integration
