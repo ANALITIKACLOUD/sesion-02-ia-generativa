@@ -63,3 +63,8 @@ variable "bedrock_model_id" {
   type        = string
   default     = "amazon.titan-embed-text-v1"
 }
+variable "claude_model_id" {
+  description = "ID del modelo de claude"
+  type        = string
+  default     = "anthropic.claude-3-sonnet-20240229-v1:0"
+}
