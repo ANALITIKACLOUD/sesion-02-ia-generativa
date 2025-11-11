@@ -1,0 +1,45 @@
+Documento de Prueba - Taller RAG
+
+¿Qué es RAG?
+
+RAG (Retrieval Augmented Generation) es una técnica que combina búsqueda de información con generación de texto usando modelos de lenguaje. El sistema primero busca documentos relevantes en una base de conocimiento, y luego usa esa información como contexto para generar respuestas más precisas y fundamentadas.
+
+Arquitectura del Taller
+
+Este taller implementa un sistema RAG usando los siguientes componentes de AWS:
+
+1. Lambda: Función serverless que procesa documentos y responde queries
+2. Bedrock: Servicio de IA que genera embeddings vectoriales de los textos
+3. OpenSearch: Motor de búsqueda que almacena y busca documentos usando vectores
+4. S3: Almacenamiento de documentos originales
+5. VPC: Red privada que conecta todos los componentes de forma segura
+
+Flujo de Procesamiento
+
+Cuando un usuario sube un documento:
+1. S3 dispara automáticamente el Lambda
+2. Lambda lee el documento de S3
+3. Lambda llama a Bedrock para generar embeddings
+4. Lambda indexa el documento con sus embeddings en OpenSearch
+
+Cuando un usuario hace una pregunta:
+1. Lambda genera embeddings de la pregunta usando Bedrock
+2. Lambda busca documentos similares en OpenSearch usando KNN
+3. Lambda retorna los documentos más relevantes
+
+Componentes de Seguridad
+
+- VPC privada: Los Lambdas no tienen acceso directo a internet
+- VPC Endpoints: Conexiones privadas a Bedrock y S3
+- Security Groups: Control de tráfico entre componentes
+- IAM Roles: Permisos mínimos necesarios para cada servicio
+
+Ventajas de esta Arquitectura
+
+1. Serverless: No hay servidores que administrar
+2. Escalable: Lambda y OpenSearch escalan automáticamente
+3. Seguro: Todo el tráfico permanece en la red privada
+4. Económico: Solo pagas por lo que usas
+5. Simple: Infraestructura como código con Terraform
+
+Este documento sirve como ejemplo de contenido que puede ser indexado y buscado en el sistema RAG.

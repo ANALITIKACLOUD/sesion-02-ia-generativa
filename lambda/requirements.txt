@@ -1,0 +1,11 @@
+# AWS SDK
+boto3>=1.34.0
+
+# OpenSearch client
+opensearch-py>=2.4.0
+
+# AWS authentication for OpenSearch
+requests-aws4auth>=1.2.3
+
+# Requests (dependency)
+requests>=2.31.0
