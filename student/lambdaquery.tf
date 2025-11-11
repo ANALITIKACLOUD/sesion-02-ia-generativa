@@ -16,6 +16,11 @@ resource "aws_lambda_function" "consulta" {
   timeout          = var.lambda_timeout
   memory_size      = var.lambda_memory
 
+
+  layers = [
+    local.aws_sdk_pandas_layer_arn   # pandas, numpy, boto3, etc.
+  ]
+
   # Configuración de VPC (Lambda privado)
   vpc_config {
     subnet_ids         = var.private_subnet_ids

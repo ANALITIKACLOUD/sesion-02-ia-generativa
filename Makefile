@@ -59,7 +59,9 @@ clean: ## Limpiar archivos temporales
 	find . -name ".terraform" -type d -exec rm -rf {} + 2>/dev/null || true
 	find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 	find . -name "*.pyc" -type f -delete
-	rm -f lambda_function.zip
+	rm -f student/lambda_function.zip
+	rm -f student/lambda_layer.zip
+	rm -rf layer/python/*
 	@echo "✓ Archivos temporales eliminados"
 
 format: ## Formatear código Terraform
@@ -76,9 +78,32 @@ validate-student: ## Validar configuración de student
 # ============================================
 
 package-lambda: ## Empaquetar código Lambda con dependencias
-	@echo "Empaquetando Lambda..."
-	cd lambda && bash build.sh
-	@echo "✓ Lambda empaquetado"
+	@echo "Empaquetando Lambda con Layers..."
+	@echo ""
+	@echo "Paso 1: Construyendo OpenSearch Layer..."
+	cd layer && chmod +x build.sh && bash build.sh
+	@echo ""
+	@echo "Paso 2: Limpiando código Lambda..."
+	cd lambda && chmod +x clean.sh && bash clean.sh
+	@echo ""
+	@echo "✓ Lambda y Layers listos para desplegar"
+	@echo ""
+	@echo "Layers utilizados:"
+	@echo "  1. AWS SDK for pandas (público) - pandas, numpy, boto3"
+	@echo "  2. OpenSearch (custom) - opensearch-py, requests-aws4auth"
+
+build-layer: ## Construir solo el Lambda Layer de OpenSearch
+	@echo "Construyendo OpenSearch Layer..."
+	cd layer && chmod +x build.sh && bash build.sh
+	@echo ""
+	@echo "Nota: pandas y numpy vienen del AWS SDK for pandas layer (público)"
+
+build-layer-no-docker: ## Alias para build-layer (no usa Docker)
+	@make build-layer
+
+clean-lambda: ## Limpiar dependencias del código Lambda
+	@echo "Limpiando dependencias del código Lambda..."
+	cd lambda && chmod +x clean.sh && bash clean.sh
 
 check-quotas: ## Verificar límites de servicio AWS
 	@echo "Verificando límites de servicio..."

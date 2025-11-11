@@ -31,6 +31,10 @@ DEPS_TO_CLEAN=(
     "dateutil"
     "python_dateutil"
     "elastic_transport"
+    "pandas"
+    "numpy"
+    "pytz"
+    "numpy.libs"
 )
 
 for dep in "${DEPS_TO_CLEAN[@]}"; do
@@ -59,6 +63,13 @@ if [ -d "$LAMBDA_DIR/requests_aws4auth" ]; then
     echo "✓ requests-aws4auth instalado"
 else
     echo "✗ ERROR: requests-aws4auth no se instaló"
+    exit 1
+fi
+
+if [ -d "$LAMBDA_DIR/pandas" ]; then
+    echo "✓ pandas instalado"
+else
+    echo "✗ ERROR: pandas no se instaló"
     exit 1
 fi
 

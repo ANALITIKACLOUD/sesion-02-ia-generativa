@@ -16,6 +16,12 @@ resource "aws_lambda_function" "rag" {
   timeout          = var.lambda_timeout
   memory_size      = var.lambda_memory
 
+  # Usar Lambda Layers: AWS SDK for pandas + OpenSearch deps
+  layers = [
+    local.aws_sdk_pandas_layer_arn,           # pandas, numpy, boto3, etc.
+    aws_lambda_layer_version.opensearch_deps.arn  # opensearch-py, requests-aws4auth
+  ]
+
   # Configuración de VPC (Lambda privado)
   vpc_config {
     subnet_ids         = var.private_subnet_ids

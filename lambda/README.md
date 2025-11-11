@@ -84,10 +84,25 @@ print(response)
 
 ## Dependencias
 
-Ver `requirements.txt`:
+Las dependencias ahora están separadas en un **Lambda Layer** para reducir el tamaño del código.
+
+### Lambda Layer (ver ../layer/)
+- pandas: Procesamiento de datos
+- numpy: Operaciones numéricas
 - boto3: Cliente AWS
 - opensearch-py: Cliente OpenSearch
 - requests-aws4auth: Autenticación AWS para OpenSearch
+
+### Código Lambda (este directorio)
+- `indexer.py`: Handler principal para indexación S3
+- `query.py`: Handler para queries semánticas
+- `index.py`: Lógica de indexación
+- `shared.py`: Utilidades compartidas
+
+### Build Process
+1. Construir layer: `cd ../layer && ./build.sh`
+2. Limpiar lambda: `cd ../lambda && ./clean.sh`
+3. Desplegar: `cd ../student && terraform apply`
 
 ## Troubleshooting
 

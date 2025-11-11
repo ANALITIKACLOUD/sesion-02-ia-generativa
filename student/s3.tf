@@ -54,6 +54,19 @@ resource "aws_s3_bucket_lifecycle_configuration" "documents" {
   }
 }
 
+# Subir archivo CSV inicial al bucket
+resource "aws_s3_object" "bbva_applications" {
+  bucket = aws_s3_bucket.documents.id
+  key    = "bbva_applications.csv"
+  source = "${path.module}/../data/bbva_applications.csv"
+  etag   = filemd5("${path.module}/../data/bbva_applications.csv")
+
+  tags = {
+    Name      = "BBVA Applications Dataset"
+    StudentID = var.student_id
+  }
+}
+
 # Notificación S3 -> Lambda (para procesamiento automático)
 resource "aws_s3_bucket_notification" "documents" {
   bucket = aws_s3_bucket.documents.id
@@ -61,7 +74,7 @@ resource "aws_s3_bucket_notification" "documents" {
   lambda_function {
     lambda_function_arn = aws_lambda_function.rag.arn
     events              = ["s3:ObjectCreated:*"]
-    filter_prefix       = "documents/"
+    # filter_prefix       = "documents/"
     # Sin filter_suffix = procesa cualquier archivo (.txt, .pdf, etc.)
   }
 
