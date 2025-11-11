@@ -1,45 +1,13 @@
-# ============================================
 # CONFIGURACIÓN DEL ESTUDIANTE
-# ============================================
-# Copia este archivo a terraform.tfvars y completa tu información
+student_id = "XXXX" #cambiar student_id
 
-# Tu ID único de estudiante (formato: alumnoXX donde XX = 01-35)
-student_id = "alumno01"  # CAMBIAR POR TU ID ASIGNADO
-
-# ============================================
 # CONFIGURACIÓN DE INFRAESTRUCTURA COMPARTIDA
-# ============================================
-# Estos valores vienen de la infraestructura compartida (shared/)
-# El instructor te proporcionará estos valores
-
-# Región de AWS
 aws_region = "us-east-1"
-
-# VPC compartida
-vpc_id = "vpc-xxxxxxxxxx"
-
-# Subnets privadas (lista)
+vpc_id = "vpc-05a9ae501a83def5c"
 private_subnet_ids = [
-  "subnet-xxxxxxxxxx",
-  "subnet-yyyyyyyyyy"
+  "subnet-04832b92af6f46505",
+  "subnet-093be1e114d8d38d9"
 ]
-
-# Security Group para Lambda
-lambda_security_group_id = "sg-xxxxxxxxxx"
-
-# OpenSearch compartido
-opensearch_endpoint   = "search-taller-rag-xxxxxxxxxxxxx.us-east-1.es.amazonaws.com"
-opensearch_domain_arn = "arn:aws:es:us-east-1:xxxxxxxxxxxx:domain/taller-rag"
-
-# ============================================
-# CONFIGURACIÓN OPCIONAL
-# ============================================
-# Puedes ajustar estos valores si lo necesitas
-
-# Lambda configuration
-# lambda_runtime = "python3.11"
-# lambda_timeout = 60
-# lambda_memory  = 512
-
-# Bedrock model
-# bedrock_model_id = "amazon.titan-embed-text-v1"
+lambda_security_group_id = "sg-0bb6783888d85bc68"
+opensearch_endpoint = "vpc-taller-rag-suxpeftnnyc7e2fxodbtrydn5m.us-east-1.es.amazonaws.com"
+opensearch_domain_arn = "arn:aws:es:us-east-1:471112840515:domain/taller-rag"

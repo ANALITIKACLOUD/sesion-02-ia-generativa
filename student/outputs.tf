@@ -29,42 +29,28 @@ output "opensearch_index" {
   description = "Nombre del índice de OpenSearch asignado"
   value       = "rag-${var.student_id}"
 }
+### funcion query
+output "lambda_query_function_name" {
+  description = "Nombre de la función Lambda de consulta"
+  value       = aws_lambda_function.consulta.function_name
+}
 
-output "test_commands" {
-  description = "Comandos para probar tu infraestructura"
-  value = <<-EOT
-  
-  ========================================
-  COMANDOS DE PRUEBA
-  ========================================
-  
-  1. Subir un documento de prueba:
-  
-     aws s3 cp sample.txt s3://${aws_s3_bucket.documents.id}/documents/sample.txt
-  
-  2. Invocar Lambda para indexar (trigger automático por S3):
-  
-     aws lambda invoke \
-       --function-name ${aws_lambda_function.rag.function_name} \
-       --payload '{"action": "index", "bucket": "${aws_s3_bucket.documents.id}", "key": "documents/sample.txt"}' \
-       response.json
-  
-  3. Hacer una consulta RAG:
-  
-     aws lambda invoke \
-       --function-name ${aws_lambda_function.rag.function_name} \
-       --payload '{"action": "query", "question": "¿De qué trata el documento?"}' \
-       response.json
-  
-  4. Ver logs:
-  
-     aws logs tail /aws/lambda/${aws_lambda_function.rag.function_name} --follow
-  
-  5. Verificar índice en OpenSearch:
-     
-     curl -XGET "https://${var.opensearch_endpoint}/rag-${var.student_id}/_search?pretty" \
-       --user admin:PASSWORD
-  
-  ========================================
-  EOT
+output "lambda_query_function_arn" {
+  description = "ARN de la función Lambda de consulta"
+  value       = aws_lambda_function.consulta.arn
+}
+
+output "lambda_query_function_url" {
+  description = "URL de la función Lambda de consulta"
+  value       = aws_lambda_function_url.consulta.function_url
+}
+
+output "api_gateway_url" {
+  description = "URL del API Gateway para consultas"
+  value       = "${aws_api_gateway_stage.query_stage.invoke_url}/query"
+}
+
+output "api_gateway_id" {
+  description = "ID del API Gateway"
+  value       = aws_api_gateway_rest_api.query_api.id
 }
