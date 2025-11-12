@@ -40,8 +40,8 @@ variable "opensearch_ebs_volume_size" {
   default     = 20
 }
 
-variable "max_students" {
-  description = "Número máximo de estudiantes esperados"
+variable "max_alumnos" {
+  description = "Número máximo de alumnos esperados"
   type        = number
   default     = 40
 }

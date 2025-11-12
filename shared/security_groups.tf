@@ -1,7 +1,7 @@
-# Security Group para Lambdas de estudiantes
+# Security Group para Lambdas de alumnos
 resource "aws_security_group" "lambda" {
   name        = "${var.project_name}-lambda-sg"
-  description = "Security group for student Lambda functions"
+  description = "Security group for alumno Lambda functions"
   vpc_id      = aws_vpc.shared.id
 
   tags = {

@@ -32,7 +32,7 @@ prueba-open-search/
 │   ├── clean.sh               # Limpia dependencias locales
 │   └── README.md
 │
-├── student/                    # Terraform
+├── alumno/                    # Terraform
 │   ├── layer.tf               # Define el Lambda Layer
 │   ├── lambda.tf              # Lambda con referencia al layer
 │   ├── s3.tf
@@ -85,12 +85,12 @@ terraform apply
 2. Mantiene solo los archivos `.py` de tu código
 3. Muestra qué archivos quedan
 
-### `student/layer.tf` (Terraform)
+### `alumno/layer.tf` (Terraform)
 1. Empaqueta `layer/python/` en un ZIP
 2. Crea el Lambda Layer en AWS
 3. Genera un ARN que se usa en `lambda.tf`
 
-### `student/lambda.tf` (Terraform)
+### `alumno/lambda.tf` (Terraform)
 1. Empaqueta el código Lambda (solo `.py`)
 2. Crea la función Lambda
 3. **Adjunta el Layer**: `layers = [aws_lambda_layer_version.dependencies.arn]`
@@ -107,7 +107,7 @@ Nuestro layer con pandas + numpy + opensearch-py debería estar alrededor de 80-
 
 Después del deploy, verifica en AWS Console:
 
-1. **Lambda → Layers**: Deberías ver `rag-dependencies-{student_id}`
+1. **Lambda → Layers**: Deberías ver `rag-dependencies-{alumno_id}`
 2. **Lambda → Functions**: Tu función debe mostrar el layer adjunto
 3. **Función → Code**: El tamaño del deployment package será muy pequeño (~1-5MB)
 

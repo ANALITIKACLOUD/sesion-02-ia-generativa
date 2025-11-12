@@ -37,3 +37,49 @@ resource "aws_route_table_association" "private" {
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
 }
+
+# Internet Gateway
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.shared.id
+
+  tags = {
+    Name = "${var.project_name}-igw"
+  }
+}
+
+# Subnets públicas (una por AZ)
+resource "aws_subnet" "public" {
+  count                   = length(var.availability_zones)
+  vpc_id                  = aws_vpc.shared.id
+  cidr_block              = cidrsubnet(var.vpc_cidr, 8, count.index + 100)
+  availability_zone       = var.availability_zones[count.index]
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.project_name}-public-${var.availability_zones[count.index]}"
+    Type = "public"
+  }
+}
+
+# Route table para subnets públicas
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.shared.id
+
+  tags = {
+    Name = "${var.project_name}-public-rt"
+  }
+}
+
+# Ruta a Internet Gateway para subnets públicas
+resource "aws_route" "public_internet_gateway" {
+  route_table_id         = aws_route_table.public.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.main.id
+}
+
+# Asociar route table con subnets públicas
+resource "aws_route_table_association" "public" {
+  count          = length(aws_subnet.public)
+  subnet_id      = aws_subnet.public[count.index].id
+  route_table_id = aws_route_table.public.id
+}

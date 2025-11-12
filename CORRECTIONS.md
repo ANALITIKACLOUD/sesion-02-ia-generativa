@@ -4,7 +4,7 @@
 
 ### 0. Backend con Variables - Configuración Parcial
 **Archivo corregido:**
-- `student/backend.tf`
+- `alumno/backend.tf`
 - `scripts/setup-student.sh`
 - `README.md`
 - `QUICKSTART.md`
@@ -13,7 +13,7 @@
 ```hcl
 # ERROR: Terraform no permite variables en backend
 backend "s3" {
-  key = "students/${var.student_id}/terraform.tfstate"
+  key = "alumnos/${var.alumno_id}/terraform.tfstate"
 }
 ```
 
@@ -31,10 +31,10 @@ backend "s3" {
 
 ```bash
 # Al inicializar - con backend-config
-terraform init -backend-config="key=students/alumno01/terraform.tfstate"
+terraform init -backend-config="key=alumnos/alumno01/terraform.tfstate"
 ```
 
-**Impacto**: Ahora cada estudiante puede tener su propio state file sin conflictos.
+**Impacto**: Ahora cada alumno puede tener su propio state file sin conflictos.
 
 ---
 
@@ -83,7 +83,7 @@ required_providers {
 
 **Mejoras:**
 1. Configuración condicional de Multi-AZ basada en `opensearch_instance_count`
-2. Default cambiado de 1 a 2 instancias (más estable para 35 estudiantes)
+2. Default cambiado de 1 a 2 instancias (más estable para 35 alumnos)
 3. Subnets dinámicas según número de instancias
 
 **Código agregado:**
@@ -106,7 +106,7 @@ vpc_options {
 }
 ```
 
-**Impacto**: Mayor estabilidad bajo carga de múltiples estudiantes.
+**Impacto**: Mayor estabilidad bajo carga de múltiples alumnos.
 
 ---
 
@@ -169,7 +169,7 @@ bash scripts/preflight-check.sh
 
 ---
 
-### 4. Guía Rápida para Estudiantes
+### 4. Guía Rápida para Alumnos
 **Archivo:** `QUICKSTART.md`
 
 **Contenido:**
@@ -185,7 +185,7 @@ bash scripts/preflight-check.sh
 ## 🔧 Mejoras Adicionales
 
 ### 1. S3 Trigger Mejorado
-**Archivo:** `student/s3.tf`
+**Archivo:** `alumno/s3.tf`
 
 **Cambio:**
 ```hcl
@@ -220,7 +220,7 @@ preflight: ## Ejecutar pre-flight checks
 ### Funcionalidad Nueva: 100%
 - ✅ Código Lambda completo y funcional
 - ✅ Scripts de testing automatizados
-- ✅ Documentación para estudiantes
+- ✅ Documentación para alumnos
 - ✅ Pre-flight checks
 
 ### Archivos Modificados: 5
@@ -229,7 +229,7 @@ preflight: ## Ejecutar pre-flight checks
 - `shared/security_groups.tf`
 - `shared/opensearch.tf`
 - `shared/variables.tf`
-- `student/s3.tf`
+- `alumno/s3.tf`
 - `Makefile`
 
 ### Archivos Nuevos: 6
@@ -276,11 +276,11 @@ preflight: ## Ejecutar pre-flight checks
    terraform output -json > ../shared-outputs.json
    ```
 
-3. **Probar como estudiante:**
+3. **Probar como alumno:**
    ```bash
    # En una terminal limpia, simula ser alumno01
    cd student
-   # Edita terraform.tfvars con student_id = "alumno01"
+   # Edita terraform.tfvars con alumno_id = "alumno01"
    terraform init
    terraform apply
    
@@ -292,7 +292,7 @@ preflight: ## Ejecutar pre-flight checks
 4. **Si todo funciona:**
    - Destruir infraestructura de prueba
    - Preparar materiales finales
-   - Distribuir repo a estudiantes
+   - Distribuir repo a alumnos
 
 ---
 

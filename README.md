@@ -58,30 +58,42 @@ terraform output -json > ../shared-outputs.json
 
 ### Setup inicial
 ```bash
+
+# 1. Acceder a cloud9
+
+# 2. Instalar Terraform
+# 1. Descargar versión más reciente
+wget https://releases.hashicorp.com/terraform/1.9.8/terraform_1.9.8_linux_amd64.zip
+
+# 2. Descomprimir
+unzip terraform_1.9.8_linux_amd64.zip
+
+# 3. Mover a /usr/local/bin
+sudo mv terraform /usr/local/bin/
+
+# 4. Verificar instalación
+terraform version
+
 # 1. Clonar repositorio
 git clone <repo-url>
-cd a/student
+cd a/alumno
 
-# 2. IMPORTANTE: Empaquetar Lambda con dependencias
-cd ../lambda
-chmod +x build.sh
-./build.sh
 
 # 3. Configurar tu ID de alumno
 cd ../student
-export STUDENT_ID="alumno01"  # Cambiar según asignación
+export ALUMNO_ID="<nombre>-<apellido>"  # Cambiar según asignación todo minuscula
 
 # 4. Copiar archivo de variables
 cp terraform.tfvars.example terraform.tfvars
 
-# 5. Editar terraform.tfvars con tu STUDENT_ID
+# 5. Editar terraform.tfvars con tu ALUMNO_ID
 vim terraform.tfvars
 ```
 
 ### Desplegar infraestructura
 ```bash
-# Inicializar con tu student_id
-terraform init -backend-config="key=students/${STUDENT_ID}/terraform.tfstate"
+# Inicializar con tu alumno_id
+terraform init -backend-config="key=alumnos/${ALUMNO_ID}/terraform.tfstate"
 
 # Aplicar
 terraform apply
@@ -90,17 +102,17 @@ terraform apply
 ### Probar el RAG
 ```bash
 # 1. Subir documento de prueba a tu bucket
-aws s3 cp sample-doc.txt s3://rag-${STUDENT_ID}/documents/
+aws s3 cp sample-doc.txt s3://rag-${ALUMNO_ID}/documents/
 
 # 2. Invocar Lambda para indexar
 aws lambda invoke \
-  --function-name rag-lambda-${STUDENT_ID} \
+  --function-name rag-lambda-${ALUMNO_ID} \
   --payload '{"action": "index", "document": "sample-doc.txt"}' \
   response.json
 
 # 3. Hacer una query
 aws lambda invoke \
-  --function-name rag-lambda-${STUDENT_ID} \
+  --function-name rag-lambda-${ALUMNO_ID} \
   --payload '{"action": "query", "question": "¿De qué trata el documento?"}' \
   response.json
 ```
@@ -122,7 +134,7 @@ terraform destroy
 │   ├── backend.tf
 │   └── outputs.tf
 │
-├── student/                  # Infraestructura por alumno
+├── alumno/                  # Infraestructura por alumno
 │   ├── backend.tf
 │   ├── variables.tf
 │   ├── terraform.tfvars.example
@@ -154,8 +166,8 @@ terraform destroy
 
 ## Notas importantes
 
-1. **Parametrización**: Cada alumno usa su `STUDENT_ID` único para evitar conflictos
-2. **OpenSearch compartido**: Cada alumno escribe en su índice `rag-{student_id}`
+1. **Parametrización**: Cada alumno usa su `ALUMNO_ID` único para evitar conflictos
+2. **OpenSearch compartido**: Cada alumno escribe en su índice `rag-{alumno_id}`
 3. **Lambda privado**: Sin acceso a internet, solo a servicios AWS vía VPC endpoints
 4. **Terraform state**: Backend S3 compartido con key por alumno
 

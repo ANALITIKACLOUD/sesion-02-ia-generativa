@@ -1,8 +1,8 @@
-# Outputs para el estudiante
+# Outputs para el alumno
 
-output "student_id" {
-  description = "ID del estudiante"
-  value       = var.student_id
+output "alumno_id" {
+  description = "ID del alumno"
+  value       = var.alumno_id
 }
 
 output "s3_bucket_name" {
@@ -27,7 +27,7 @@ output "lambda_function_url" {
 
 output "opensearch_index" {
   description = "Nombre del índice de OpenSearch asignado"
-  value       = "rag-${var.student_id}"
+  value       = "rag-${var.alumno_id}"
 }
 ### funcion query
 output "lambda_query_function_name" {

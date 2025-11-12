@@ -2,7 +2,7 @@
 
 ## Vista General
 
-Este documento describe la arquitectura completa del taller RAG, diseñada para 35 estudiantes desplegando infraestructura serverless en AWS.
+Este documento describe la arquitectura completa del taller RAG, diseñada para 35 alumnos desplegando infraestructura serverless en AWS.
 
 ## Diagrama de Arquitectura Completa
 
@@ -30,17 +30,17 @@ graph TB
         end
     end
     
-    subgraph "Por Estudiante - alumno01"
+    subgraph "Por Alumno - alumno01"
         S3_01[S3 Bucket<br/>rag-alumno01]
         L_01[Lambda<br/>rag-lambda-alumno01]
     end
     
-    subgraph "Por Estudiante - alumno02"
+    subgraph "Por Alumno - alumno02"
         S3_02[S3 Bucket<br/>rag-alumno02]
         L_02[Lambda<br/>rag-lambda-alumno02]
     end
     
-    subgraph "Por Estudiante - alumno35"
+    subgraph "Por Alumno - alumno35"
         S3_35[S3 Bucket<br/>rag-alumno35]
         L_35[Lambda<br/>rag-lambda-alumno35]
     end
@@ -84,7 +84,7 @@ graph TB
 
 ```mermaid
 sequenceDiagram
-    participant User as Estudiante
+    participant User as Alumno
     participant S3 as S3 Bucket
     participant Lambda as Lambda Function
     participant Bedrock as Bedrock
@@ -107,7 +107,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant User as Estudiante
+    participant User as Alumno
     participant Lambda as Lambda Function
     participant Bedrock as Bedrock
     participant OS as OpenSearch
@@ -244,10 +244,10 @@ graph TD
 graph TB
     subgraph "S3 Backend Structure"
         ROOT[taller-rag-terraform-state/]
-        ROOT --> STUDENTS[students/]
-        STUDENTS --> A01[alumno01/terraform.tfstate]
-        STUDENTS --> A02[alumno02/terraform.tfstate]
-        STUDENTS --> A35[alumno35/terraform.tfstate]
+        ROOT --> ALUMNOS[alumnos/]
+        ALUMNOS --> A01[alumno01/terraform.tfstate]
+        ALUMNOS --> A02[alumno02/terraform.tfstate]
+        ALUMNOS --> A35[alumno35/terraform.tfstate]
     end
     
     subgraph "DynamoDB Locks"
@@ -264,7 +264,7 @@ graph TB
 
 ## OpenSearch Index Structure
 
-Cada estudiante tiene su propio índice: `rag-alumno01`, `rag-alumno02`, etc.
+Cada alumno tiene su propio índice: `rag-alumno01`, `rag-alumno02`, etc.
 
 ```json
 {
@@ -315,12 +315,12 @@ Cada estudiante tiene su propio índice: `rag-alumno01`, `rag-alumno02`, etc.
 
 ## Escala y Límites
 
-### Por Estudiante
+### Por Alumno
 - **Lambda**: 1 función
 - **S3 Bucket**: 1 bucket
 - **OpenSearch Index**: 1 índice
 
-### Compartido (todos los estudiantes)
+### Compartido (todos los alumnos)
 - **VPC**: 1 VPC
 - **Subnets**: 2 subnets privadas
 - **VPC Endpoints**: 3 endpoints

@@ -1,25 +1,24 @@
 # Crear el ZIP del código Lambda
-data "archive_file" "lambda_zip" {
+data "archive_file" "lambdaquery_zip" {
   type        = "zip"
   source_dir  = "${path.module}/../lambda"
   output_path = "${path.module}/lambda_function.zip"
 }
 
 # Lambda Function
-resource "aws_lambda_function" "rag" {
+resource "aws_lambda_function" "consulta" {
   filename         = data.archive_file.lambda_zip.output_path
-  function_name    = "lambda-embedding-${var.student_id}"
+  function_name    = "lambda-query-${var.alumno_id}"
   role             = aws_iam_role.lambda.arn
-  handler          = "indexer.handler"
+  handler          = "query.handler"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   runtime          = var.lambda_runtime
   timeout          = var.lambda_timeout
   memory_size      = var.lambda_memory
 
-  # Usar Lambda Layers: AWS SDK for pandas + OpenSearch deps
+
   layers = [
-    local.aws_sdk_pandas_layer_arn,           # pandas, numpy, boto3, etc.
-    aws_lambda_layer_version.opensearch_deps.arn  # opensearch-py, requests-aws4auth
+    local.aws_sdk_pandas_layer_arn   # pandas, numpy, boto3, etc.
   ]
 
   # Configuración de VPC (Lambda privado)
@@ -31,44 +30,44 @@ resource "aws_lambda_function" "rag" {
   # Variables de entorno
   environment {
     variables = {
-      STUDENT_ID          = var.student_id
+      STUDENT_ID          = var.alumno_id
       S3_BUCKET           = aws_s3_bucket.documents.id
       OPENSEARCH_ENDPOINT = var.opensearch_endpoint
-      OPENSEARCH_INDEX    = "rag-${var.student_id}"
+      OPENSEARCH_INDEX    = "rag-${var.alumno_id}"
       BEDROCK_MODEL_ID    = var.bedrock_model_id
       # AWS_REGION se proporciona automáticamente por Lambda (no se puede override)
     }
   }
 
   tags = {
-    Name      = "rag-lambda-${var.student_id}"
-    StudentID = var.student_id
+    Name      = "rag-query-${var.alumno_id}"
+    AlumnoID = var.alumno_id
   }
 }
 
 # CloudWatch Log Group para el Lambda
-resource "aws_cloudwatch_log_group" "lambda" {
-  name              = "/aws/lambda/rag-lambda-${var.student_id}"
+resource "aws_cloudwatch_log_group" "lambda_query" {
+  name              = "/aws/lambda/lambda-query-${var.alumno_id}"
   retention_in_days = 7
 
   tags = {
-    Name      = "rag-lambda-${var.student_id}-logs"
-    StudentID = var.student_id
+    Name      = "rag-query-${var.alumno_id}-logs"
+    AlumnoID = var.alumno_id
   }
 }
 
 # Permiso para que S3 invoque el Lambda
-resource "aws_lambda_permission" "allow_s3" {
+resource "aws_lambda_permission" "allow_s3_query" {
   statement_id  = "AllowS3Invoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.rag.function_name
+  function_name = aws_lambda_function.consulta.function_name
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.documents.arn
 }
 
 # Lambda Function URL (opcional - para testing directo)
-resource "aws_lambda_function_url" "rag" {
-  function_name      = aws_lambda_function.rag.function_name
+resource "aws_lambda_function_url" "consulta" {
+  function_name      = aws_lambda_function.consulta.function_name
   authorization_type = "AWS_IAM"
 
   cors {

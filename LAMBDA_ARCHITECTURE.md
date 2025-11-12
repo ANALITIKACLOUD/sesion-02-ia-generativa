@@ -59,7 +59,7 @@ Este proyecto implementa una arquitectura RAG (Retrieval-Augmented Generation) c
 ```
 
 **Variables de entorno:**
-- `STUDENT_ID`: ID del estudiante
+- `ALUMNO_ID`: ID del alumno
 - `S3_BUCKET`: Bucket de documentos
 - `OPENSEARCH_ENDPOINT`: Endpoint de OpenSearch
 - `OPENSEARCH_INDEX`: Nombre del índice
@@ -71,7 +71,7 @@ Este proyecto implementa una arquitectura RAG (Retrieval-Augmented Generation) c
 aws s3 cp document.txt s3://your-bucket/documents/document.txt
 
 # Verificar logs
-aws logs tail /aws/lambda/rag-indexer-{student_id} --follow
+aws logs tail /aws/lambda/rag-indexer-{alumno_id} --follow
 ```
 
 ---
@@ -93,7 +93,7 @@ aws logs tail /aws/lambda/rag-indexer-{student_id} --follow
 ```
 
 **Variables de entorno:**
-- `STUDENT_ID`: ID del estudiante
+- `ALUMNO_ID`: ID del alumno
 - `OPENSEARCH_ENDPOINT`: Endpoint de OpenSearch
 - `OPENSEARCH_INDEX`: Nombre del índice
 - `BEDROCK_MODEL_ID`: Modelo de embeddings
@@ -102,7 +102,7 @@ aws logs tail /aws/lambda/rag-indexer-{student_id} --follow
 ```bash
 # Búsqueda básica
 aws lambda invoke \
-  --function-name rag-query-{student_id} \
+  --function-name rag-query-{alumno_id} \
   --payload '{"query": "What is OpenSearch?"}' \
   response.json
 
@@ -111,7 +111,7 @@ cat response.json | jq '.'
 
 # Búsqueda con más resultados
 aws lambda invoke \
-  --function-name rag-query-{student_id} \
+  --function-name rag-query-{alumno_id} \
   --payload '{"query": "machine learning", "k": 10}' \
   response.json
 ```
@@ -127,21 +127,21 @@ El archivo fue actualizado para incluir 3 Lambdas:
 ```hcl
 # Lambda Indexer - Procesa documentos
 resource "aws_lambda_function" "indexer" {
-  function_name = "rag-indexer-${var.student_id}"
+  function_name = "rag-indexer-${var.alumno_id}"
   handler       = "indexer.handler"
   # ... configuración VPC, IAM, etc
 }
 
 # Lambda Query - Búsquedas
 resource "aws_lambda_function" "query" {
-  function_name = "rag-query-${var.student_id}"
+  function_name = "rag-query-${var.alumno_id}"
   handler       = "query.handler"
   # ... configuración VPC, IAM, etc
 }
 
 # Lambda Test - Conectividad
 resource "aws_lambda_function" "test" {
-  function_name = "rag-test-${var.student_id}"
+  function_name = "rag-test-${var.alumno_id}"
   handler       = "index.handler"
   # ... configuración VPC, IAM, etc
 }
@@ -154,7 +154,7 @@ resource "aws_lambda_function" "test" {
 ### 1. Desplegar infraestructura
 
 ```bash
-cd student/
+cd alumno/
 
 # Inicializar Terraform
 terraform init
@@ -173,9 +173,9 @@ terraform output
 aws lambda list-functions | grep rag-
 
 # Debe mostrar:
-# - rag-indexer-{student_id}
-# - rag-query-{student_id}
-# - rag-test-{student_id}
+# - rag-indexer-{alumno_id}
+# - rag-query-{alumno_id}
+# - rag-test-{alumno_id}
 ```
 
 ---
@@ -187,7 +187,7 @@ aws lambda list-functions | grep rag-
 ```bash
 # Invocar Lambda de test
 aws lambda invoke \
-  --function-name rag-test-{student_id} \
+  --function-name rag-test-{alumno_id} \
   response.json
 
 # Ver resultado
@@ -206,10 +206,10 @@ EOF
 
 # Subir a S3 (trigger automático del Indexer)
 aws s3 cp test-document.txt \
-  s3://rag-{student_id}/documents/test-document.txt
+  s3://rag-{alumno_id}/documents/test-document.txt
 
 # Ver logs del indexer
-aws logs tail /aws/lambda/rag-indexer-{student_id} --follow
+aws logs tail /aws/lambda/rag-indexer-{alumno_id} --follow
 ```
 
 ### Test 3: Realizar búsqueda
@@ -217,7 +217,7 @@ aws logs tail /aws/lambda/rag-indexer-{student_id} --follow
 ```bash
 # Búsqueda simple
 aws lambda invoke \
-  --function-name rag-query-{student_id} \
+  --function-name rag-query-{alumno_id} \
   --payload '{"query": "What is OpenSearch?"}' \
   response.json
 
@@ -226,7 +226,7 @@ cat response.json | jq '.body | fromjson'
 
 # Búsqueda con más resultados
 aws lambda invoke \
-  --function-name rag-query-{student_id} \
+  --function-name rag-query-{alumno_id} \
   --payload '{"query": "vector search", "k": 5}' \
   response.json
 ```
@@ -236,7 +236,7 @@ aws lambda invoke \
 ```bash
 # Count de documentos
 aws lambda invoke \
-  --function-name rag-query-{student_id} \
+  --function-name rag-query-{alumno_id} \
   --payload '{"query": "test"}' \
   response.json
 
@@ -264,7 +264,7 @@ cat response.json | jq '.body | fromjson.results[0]'
         "metadata": {
           "bucket": "rag-12345",
           "key": "documents/test-document.txt",
-          "student_id": "12345",
+          "alumno_id": "12345",
           "size": 189
         },
         "indexed_at": "2025-01-10T15:30:00Z"
@@ -315,14 +315,14 @@ cat response.json | jq '.body | fromjson.results[0]'
 ```bash
 # 1. Verificar que el índice existe
 aws lambda invoke \
-  --function-name rag-test-{student_id} \
+  --function-name rag-test-{alumno_id} \
   response.json
 
 # 2. Ver si hay documentos indexados
 cat response.json | jq '.body | fromjson.tests.opensearch_indices'
 
 # 3. Verificar logs del indexer
-aws logs tail /aws/lambda/rag-indexer-{student_id} --since 1h
+aws logs tail /aws/lambda/rag-indexer-{alumno_id} --since 1h
 ```
 
 ### Problema: Error de permisos
@@ -330,12 +330,12 @@ aws logs tail /aws/lambda/rag-indexer-{student_id} --since 1h
 ```bash
 # Verificar IAM role del Lambda
 aws lambda get-function \
-  --function-name rag-query-{student_id} \
+  --function-name rag-query-{alumno_id} \
   --query 'Configuration.Role'
 
 # Verificar políticas adjuntas
 aws iam list-attached-role-policies \
-  --role-name rag-lambda-role-{student_id}
+  --role-name rag-lambda-role-{alumno_id}
 ```
 
 ### Problema: Timeout del Lambda

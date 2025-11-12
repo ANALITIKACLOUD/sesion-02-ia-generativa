@@ -18,7 +18,7 @@ data "archive_file" "layer_zip" {
 # Lambda Layer custom para opensearch-py y requests-aws4auth
 resource "aws_lambda_layer_version" "opensearch_deps" {
   filename            = data.archive_file.layer_zip.output_path
-  layer_name          = "rag-opensearch-${var.student_id}"
+  layer_name          = "rag-opensearch-${var.alumno_id}"
   compatible_runtimes = [var.lambda_runtime]
   source_code_hash    = data.archive_file.layer_zip.output_base64sha256
 

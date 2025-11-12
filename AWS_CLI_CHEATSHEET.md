@@ -243,7 +243,7 @@ aws cloudwatch put-metric-alarm \
 
 ### Ver estados de Terraform en S3
 ```bash
-aws s3 ls s3://taller-rag-terraform-state/students/ --recursive
+aws s3 ls s3://taller-rag-terraform-state/alumnos/ --recursive
 ```
 
 ### Ver locks activos en DynamoDB
@@ -255,7 +255,7 @@ aws dynamodb scan --table-name taller-rag-terraform-locks
 ```bash
 aws dynamodb delete-item \
   --table-name taller-rag-terraform-locks \
-  --key '{"LockID": {"S": "taller-rag-terraform-state/students/alumno01/terraform.tfstate"}}'
+  --key '{"LockID": {"S": "taller-rag-terraform-state/alumnos/alumno01/terraform.tfstate"}}'
 ```
 
 ## Service Quotas
@@ -401,23 +401,23 @@ aws lambda update-function-configuration \
 
 ## Scripts Combinados
 
-### Monitoreo completo de un estudiante
+### Monitoreo completo de un alumno
 ```bash
 #!/bin/bash
-STUDENT_ID=$1
+ALUMNO_ID=$1
 
 echo "=== Lambda Status ==="
-aws lambda get-function --function-name rag-lambda-$STUDENT_ID --query 'Configuration.[State,LastUpdateStatus]'
+aws lambda get-function --function-name rag-lambda-$ALUMNO_ID --query 'Configuration.[State,LastUpdateStatus]'
 
 echo "=== Recent Logs ==="
-aws logs tail /aws/lambda/rag-lambda-$STUDENT_ID --since 5m
+aws logs tail /aws/lambda/rag-lambda-$ALUMNO_ID --since 5m
 
 echo "=== S3 Files ==="
-aws s3 ls s3://rag-$STUDENT_ID/documents/
+aws s3 ls s3://rag-$ALUMNO_ID/documents/
 
 echo "=== OpenSearch Index ==="
 OPENSEARCH_ENDPOINT=$(aws opensearch describe-domain --domain-name taller-rag --query 'DomainStatus.Endpoint' --output text)
-curl -s -XGET "https://$OPENSEARCH_ENDPOINT/_cat/indices/rag-$STUDENT_ID?v" --user admin:PASSWORD
+curl -s -XGET "https://$OPENSEARCH_ENDPOINT/_cat/indices/rag-$ALUMNO_ID?v" --user admin:PASSWORD
 ```
 
 ### Health check completo

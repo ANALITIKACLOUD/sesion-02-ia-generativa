@@ -1,10 +1,10 @@
-variable "student_id" {
-  description = "ID único del estudiante (ej: alumno01, alumno02, etc)"
+variable "alumno_id" {
+  description = "ID único del alumno en formato nombre-apellido (ej: artemio-perlacios)"
   type        = string
 
   validation {
-    condition     = can(regex("^alumno[0-9]{2}$", var.student_id))
-    error_message = "El student_id debe tener el formato 'alumnoXX' donde XX son dos dígitos (ej: alumno01)"
+    condition     = can(regex("^[a-z]+-[a-z]+$", var.alumno_id))
+    error_message = "El alumno_id debe tener el formato 'nombre-apellido' en minúsculas (ej: artemio-perlacios)"
   }
 }
 

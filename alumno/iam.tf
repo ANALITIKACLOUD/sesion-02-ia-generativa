@@ -1,6 +1,6 @@
 # IAM Role para el Lambda
 resource "aws_iam_role" "lambda" {
-  name = "rag-lambda-role-${var.student_id}"
+  name = "rag-lambda-role-${var.alumno_id}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -16,8 +16,8 @@ resource "aws_iam_role" "lambda" {
   })
 
   tags = {
-    Name      = "rag-lambda-role-${var.student_id}"
-    StudentID = var.student_id
+    Name      = "rag-lambda-role-${var.alumno_id}"
+    AlumnoID = var.alumno_id
   }
 }
 
@@ -36,7 +36,7 @@ resource "aws_iam_role_policy" "lambda_logging" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Resource = "arn:aws:logs:${var.aws_region}:*:log-group:/aws/lambda/rag-lambda-${var.student_id}:*"
+        Resource = "arn:aws:logs:${var.aws_region}:*:log-group:/aws/lambda/rag-lambda-${var.alumno_id}:*"
       }
     ]
   })

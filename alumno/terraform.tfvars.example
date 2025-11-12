@@ -1,5 +1,5 @@
-# CONFIGURACIÓN DEL ESTUDIANTE
-student_id = "XXXX" #cambiar student_id
+# CONFIGURACIÓN DEL ALUMNO
+alumno_id = "XXXX" #cambiar alumno_id
 
 # CONFIGURACIÓN DE INFRAESTRUCTURA COMPARTIDA
 aws_region = "us-east-1"

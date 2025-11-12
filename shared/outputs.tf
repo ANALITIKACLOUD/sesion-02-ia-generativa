@@ -10,6 +10,16 @@ output "private_subnet_ids" {
   value       = aws_subnet.private[*].id
 }
 
+output "public_subnet_ids" {
+  description = "IDs de las subnets públicas"
+  value       = aws_subnet.public[*].id
+}
+
+output "internet_gateway_id" {
+  description = "ID del Internet Gateway"
+  value       = aws_internet_gateway.main.id
+}
+
 output "lambda_security_group_id" {
   description = "ID del Security Group para Lambdas"
   value       = aws_security_group.lambda.id
@@ -55,16 +65,16 @@ output "project_name" {
   value       = var.project_name
 }
 
-# Instrucciones para estudiantes
-output "student_instructions" {
+# Instrucciones para alumnos
+output "alumno_instructions" {
   description = "Instrucciones para configurar el backend de Terraform"
   value = <<-EOT
   
-  Para configurar tu infraestructura de estudiante:
+  Para configurar tu infraestructura de alumno:
   
-  1. Ir a la carpeta student/
+  1. Ir a la carpeta alumno/
   2. Copiar terraform.tfvars.example a terraform.tfvars
-  3. Editar terraform.tfvars con tu STUDENT_ID único
+  3. Editar terraform.tfvars con tu ALUMNO_ID único
   4. Ejecutar: terraform init
   5. Ejecutar: terraform apply
   

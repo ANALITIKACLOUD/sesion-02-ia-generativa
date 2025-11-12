@@ -1,4 +1,4 @@
-# Guía Rápida - Estudiante
+# Guía Rápida - Alumno
 
 ## 🚀 Setup Rápido (5 minutos)
 
@@ -22,7 +22,7 @@ cp terraform.tfvars.example terraform.tfvars
 
 # Editar con tu Student ID
 vim terraform.tfvars
-# Cambiar: student_id = "alumnoXX"
+# Cambiar: alumno_id = "alumnoXX"
 ```
 
 ### 3. Obtén configuración compartida
@@ -56,9 +56,9 @@ Este script te pedirá tu Student ID y configurará todo automáticamente.
 ```bash
 cd student
 
-# Inicializar Terraform con tu student_id
+# Inicializar Terraform con tu alumno_id
 # Reemplaza alumno01 con tu ID asignado
-terraform init -backend-config="key=students/alumno01/terraform.tfstate"
+terraform init -backend-config="key=alumnos/alumno01/terraform.tfstate"
 
 # Aplicar
 terraform apply

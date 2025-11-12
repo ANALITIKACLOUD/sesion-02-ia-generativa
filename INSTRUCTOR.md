@@ -34,7 +34,7 @@ make deploy-shared
 # 3. Exportar outputs
 make outputs
 
-# Esto crea shared-outputs.json que necesitarán los estudiantes
+# Esto crea shared-outputs.json que necesitarán los alumnos
 ```
 
 ### 4. Preparar Repositorio
@@ -47,12 +47,12 @@ git commit -m "Taller RAG - Configuración inicial"
 git remote add origin <repo-url>
 git push -u origin main
 
-# Compartir URL del repositorio con estudiantes
+# Compartir URL del repositorio con alumnos
 ```
 
 ### 5. Preparar Cloud9 Environments (Opcional)
 
-Si usas Cloud9 para los estudiantes:
+Si usas Cloud9 para los alumnos:
 
 ```bash
 # Crear 35 ambientes Cloud9 (puede automatizarse)
@@ -81,7 +81,7 @@ done
   ```bash
   git clone <repo-url>
   cd a
-  make setup-student  # Configura su STUDENT_ID
+  make setup-student  # Configura su ALUMNO_ID
   make deploy-student # Despliega su infra
   ```
 - **01:40-02:00**: Troubleshooting y ayuda
@@ -90,7 +90,7 @@ done
 - **02:00-02:15**: Explicar cómo probar el sistema
 - **02:15-02:30**: Cada alumno sube un documento y hace queries
   ```bash
-  make test STUDENT_ID=alumno01
+  make test ALUMNO_ID=alumno01
   ```
 - **02:30-02:45**: Ver logs y dashboard de OpenSearch
 - **02:45-03:00**: Experimentos libres
@@ -109,11 +109,11 @@ done
 ### Monitorear Recursos
 
 ```bash
-# Ver todos los estudiantes activos
-make list-students
+# Ver todos los alumnos activos
+make list-alumnos
 
-# Ver logs de un estudiante específico
-make logs STUDENT_ID=alumno01
+# Ver logs de un alumno específico
+make logs ALUMNO_ID=alumno01
 
 # Verificar estado de OpenSearch
 aws opensearch describe-domain --domain-name taller-rag
@@ -167,11 +167,11 @@ Script para demo del instructor:
 # 1. Mostrar arquitectura
 cat README.md
 
-# 2. Desplegar un estudiante de ejemplo
-export STUDENT_ID=demo
+# 2. Desplegar un alumno de ejemplo
+export ALUMNO_ID=demo
 cd student
 cp terraform.tfvars.example terraform.tfvars
-# Editar con STUDENT_ID=demo
+# Editar con ALUMNO_ID=demo
 terraform apply
 
 # 3. Subir documento
@@ -191,10 +191,10 @@ aws logs tail /aws/lambda/rag-lambda-demo --follow
 
 ## Post-Taller
 
-### 1. Cleanup de Estudiantes
+### 1. Cleanup de Alumnos
 
 ```bash
-# Si algunos estudiantes no hicieron destroy
+# Si algunos alumnos no hicieron destroy
 bash scripts/cleanup-all.sh
 ```
 
@@ -222,7 +222,7 @@ aws ce get-cost-and-usage \
 
 ## Costos Estimados
 
-Para un taller de 4 horas con 35 estudiantes:
+Para un taller de 4 horas con 35 alumnos:
 
 | Recurso | Costo |
 |---------|-------|
@@ -241,7 +241,7 @@ Para un taller de 4 horas con 35 estudiantes:
 ## Contacto y Soporte
 
 Para problemas durante el taller:
-1. Revisar logs con `make logs STUDENT_ID=alumnoXX`
+1. Revisar logs con `make logs ALUMNO_ID=alumnoXX`
 2. Verificar security groups y VPC endpoints
 3. Confirmar IAM permissions
 4. Consultar esta guía

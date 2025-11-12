@@ -1,10 +1,10 @@
-# S3 bucket para almacenar documentos del estudiante
+# S3 bucket para almacenar documentos del alumno
 resource "aws_s3_bucket" "documents" {
-  bucket = "rag-${var.student_id}"
+  bucket = "rag-${var.alumno_id}"
 
   tags = {
-    Name      = "rag-${var.student_id}"
-    StudentID = var.student_id
+    Name      = "rag-${var.alumno_id}"
+    AlumnoID = var.alumno_id
   }
 }
 
@@ -63,7 +63,7 @@ resource "aws_s3_object" "bbva_applications" {
 
   tags = {
     Name      = "BBVA Applications Dataset"
-    StudentID = var.student_id
+    AlumnoID = var.alumno_id
   }
 }
 

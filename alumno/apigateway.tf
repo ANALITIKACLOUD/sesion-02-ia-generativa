@@ -1,15 +1,15 @@
 # API Gateway REST API
 resource "aws_api_gateway_rest_api" "query_api" {
-  name        = "query-api-${var.student_id}"
-  description = "API Gateway para consultas RAG del estudiante ${var.student_id}"
+  name        = "query-api-${var.alumno_id}"
+  description = "API Gateway para consultas RAG del alumno ${var.alumno_id}"
 
   endpoint_configuration {
     types = ["REGIONAL"]
   }
 
   tags = {
-    Name      = "query-api-${var.student_id}"
-    StudentID = var.student_id
+    Name      = "query-api-${var.alumno_id}"
+    AlumnoID = var.alumno_id
   }
 }
 
@@ -79,19 +79,19 @@ resource "aws_api_gateway_stage" "query_stage" {
   stage_name    = "dev"
 
   tags = {
-    Name      = "query-api-${var.student_id}-dev"
-    StudentID = var.student_id
+    Name      = "query-api-${var.alumno_id}-dev"
+    AlumnoID = var.alumno_id
   }
 }
 
 # CloudWatch Log Group para API Gateway
 resource "aws_cloudwatch_log_group" "api_gateway_logs" {
-  name              = "/aws/apigateway/query-api-${var.student_id}"
+  name              = "/aws/apigateway/query-api-${var.alumno_id}"
   retention_in_days = 7
 
   tags = {
-    Name      = "query-api-${var.student_id}-logs"
-    StudentID = var.student_id
+    Name      = "query-api-${var.alumno_id}-logs"
+    AlumnoID = var.alumno_id
   }
 }
 

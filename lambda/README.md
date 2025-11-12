@@ -42,7 +42,7 @@ aws lambda invoke \
 
 ## Variables de Entorno Requeridas
 
-- `STUDENT_ID`: ID del estudiante (ej: alumno01)
+- `ALUMNO_ID`: ID del alumno (ej: alumno01)
 - `S3_BUCKET`: Bucket S3 para documentos
 - `OPENSEARCH_ENDPOINT`: Endpoint de OpenSearch
 - `OPENSEARCH_INDEX`: Nombre del índice (ej: rag-alumno01)
@@ -58,7 +58,7 @@ aws lambda invoke \
   "metadata": {
     "bucket": "rag-alumno01",
     "key": "documents/test.txt",
-    "student_id": "alumno01"
+    "alumno_id": "alumno01"
   },
   "timestamp": "2025-11-10T15:30:00Z"
 }
