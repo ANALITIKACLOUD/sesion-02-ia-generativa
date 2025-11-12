@@ -14,6 +14,12 @@ data "external" "check_opensearch_role" {
 resource "aws_iam_service_linked_role" "opensearch" {
   count            = data.external.check_opensearch_role.result.exists == "false" ? 1 : 0
   aws_service_name = "opensearchservice.amazonaws.com"
+    lifecycle {
+    prevent_destroy = true
+    ignore_changes  = all
+  }
+
+
 }
 
 # Obtener el rol existente si ya existe
