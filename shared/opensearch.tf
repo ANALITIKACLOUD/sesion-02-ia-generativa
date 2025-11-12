@@ -1,32 +1,12 @@
-# Verificar si el Service Linked Role de OpenSearch ya existe
-data "external" "check_opensearch_role" {
-  program = ["bash", "-c", <<-EOT
-    if aws iam get-role --role-name AWSServiceRoleForAmazonOpenSearchService > /dev/null 2>&1; then
-      echo '{"exists":"true"}'
-    else
-      echo '{"exists":"false"}'
-    fi
-  EOT
-  ]
-}
+# opensearch.tf
 
-# Crear Service Linked Role solo si NO existe
-resource "aws_iam_service_linked_role" "opensearch" {
-  count            = data.external.check_opensearch_role.result.exists == "false" ? 1 : 0
-  aws_service_name = "opensearchservice.amazonaws.com"
-    lifecycle {
-    prevent_destroy = true
-    ignore_changes  = all
-  }
-
-
-}
-
-# Obtener el rol existente si ya existe
+# Solo verificar que el rol existe (sin crearlo)
 data "aws_iam_role" "opensearch_service_role" {
-  count = data.external.check_opensearch_role.result.exists == "true" ? 1 : 0
-  name  = "AWSServiceRoleForAmazonOpenSearchService"
+  name = "AWSServiceRoleForAmazonOpenSearchService"
 }
+
+# Data source para obtener account ID
+data "aws_caller_identity" "current" {}
 
 # OpenSearch Domain
 resource "aws_opensearch_domain" "shared" {
@@ -52,37 +32,29 @@ resource "aws_opensearch_domain" "shared" {
     volume_type = "gp3"
   }
 
-  # Configuración VPC
   vpc_options {
     subnet_ids         = var.opensearch_instance_count > 1 ? slice(aws_subnet.private[*].id, 0, 2) : [aws_subnet.private[0].id]
     security_group_ids = [aws_security_group.opensearch.id]
   }
 
-  # Encriptación en reposo
   encrypt_at_rest {
     enabled = true
   }
 
-  # Encriptación en tránsito
   node_to_node_encryption {
     enabled = true
   }
 
-  # Configuración de dominio
   domain_endpoint_options {
     enforce_https       = true
     tls_security_policy = "Policy-Min-TLS-1-2-2019-07"
   }
 
-  # Control de acceso - Deshabilitado para simplificar el taller
-  # Se usa solo IAM para autenticación
   advanced_security_options {
     enabled                        = false
     internal_user_database_enabled = false
   }
 
-  # Access policy - permitir desde VPC con IAM
-  # Fine-grained access control maneja los permisos reales
   access_policies = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -101,12 +73,8 @@ resource "aws_opensearch_domain" "shared" {
     Name = "${var.project_name}-opensearch"
   }
 
-  # Depende del rol (ya sea creado o existente)
+  # Solo depende del data source (no del recurso)
   depends_on = [
-    aws_iam_service_linked_role.opensearch,
     data.aws_iam_role.opensearch_service_role
   ]
 }
-
-# Data source para obtener account ID
-data "aws_caller_identity" "current" {}
