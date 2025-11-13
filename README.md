@@ -23,64 +23,7 @@ accountID: 471112840515
 usuario: [nombre].[apellido]
 
 password: Participante2025!
-## Pre-requisitos (instructor)
 
-
-### 1. Clonar repositorio
-
-
-```bash
-git clone https://github.com/ANALITIKACLOUD/sesion-02-ia-generativa.git
-```
-```bash
-cd sesion-02-ia-generativa
-```
-
-### 2. Instalar Terraform
-
-
-#### 2.1. Descargar
-
-```bash
-wget https://releases.hashicorp.com/terraform/1.9.8/terraform_1.9.8_linux_amd64.zip
-```
-#### 2.1. Descomprimir
-```bash
-unzip terraform_1.9.8_linux_amd64.zip
-```
-#### 2.1. Mover a /usr/local/bin
-```bash
-sudo mv terraform /usr/local/bin/
-```
-#### 2.1. Verificar instalación
-```bash
-terraform version
-```
-### 3. Levantar infraestructura compartida
-
-
-```bash
-cd shared/
-```
-```bash
-terraform init
-```
-```bash
-terraform apply
-```
-
-
-Esto crea:
-- VPC con subnets privadas
-- VPC Endpoints (Bedrock, S3, CloudWatch)
-- OpenSearch domain
-- Security Groups base
-- S3 backend para Terraform states de alumnos
-
-### 2. Capturar outputs
-```bash
-terraform output > outputs.txt
-```
 
 # Instrucciones para participantes
 
