@@ -49,7 +49,7 @@ variable "lambda_runtime" {
 variable "lambda_timeout" {
   description = "Timeout del Lambda en segundos"
   type        = number
-  default     = 60
+  default     = 3600
 }
 
 variable "lambda_memory" {
