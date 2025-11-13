@@ -133,6 +133,7 @@ terraform version
 export ALUMNO_ID="nombre-apellido"  # Cambiar por su nombre y apellido en minuscula
 
 # 4. Copiar archivo de variables
+cd alumno
 cp terraform.tfvars.example terraform.tfvars
 
 # 5. Editar terraform.tfvars con tu ALUMNO_ID
