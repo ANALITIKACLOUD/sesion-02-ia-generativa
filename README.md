@@ -164,6 +164,13 @@ Do you want to perform these actions?
 - Verificar IAM role del Lambda incluye permisos de OpenSearch
 - Confirmar que el security group permite tráfico desde Lambda SG
 
+### Probar Lambda Query
+```bash
+{
+  "body": "{\"question\": \"¿Qué aplicaciones críticas tiene Colombia?\"}"
+}
+```
+
 ### Terraform state lock
 ```bash
 # Ver locks activos
