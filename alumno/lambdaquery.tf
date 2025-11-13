@@ -12,7 +12,7 @@ resource "aws_lambda_function" "consulta" {
   role             = aws_iam_role.lambda.arn
   handler          = "query.handler"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  runtime          = var.lambda_runtime
+  runtime          = var.lambda_runtime_query
   timeout          = var.lambda_timeout
   memory_size      = var.lambda_memory
 

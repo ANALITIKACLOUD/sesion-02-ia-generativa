@@ -11,7 +11,7 @@ terraform {
   # Backend S3 compartido - cada alumno tiene su propia key
   # La key se configura dinámicamente durante terraform init
   backend "s3" {
-    bucket         = "taller-ia-terraform-state"
+    bucket         = "taller-rag-terraform-state"
     region         = "us-east-1"
     #dynamodb_table = "taller-rag-terraform-locks"
     #encrypt        = true

@@ -45,6 +45,11 @@ variable "lambda_runtime" {
   type        = string
   default     = "python3.11"
 }
+variable "lambda_runtime_query" {
+  description = "Runtime de Lambda"
+  type        = string
+  default     = "python3.12"
+}
 
 variable "lambda_timeout" {
   description = "Timeout del Lambda en segundos"

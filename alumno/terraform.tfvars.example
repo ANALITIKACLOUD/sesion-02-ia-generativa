@@ -1,13 +1,13 @@
 # CONFIGURACIÓN DEL ALUMNO
 alumno_id = "XXXX-XXXX" #cambiar <nombre>-<apellido>
- 
+
 # CONFIGURACIÓN DE INFRAESTRUCTURA COMPARTIDA
 aws_region = "us-east-1"
-vpc_id = "vpc-05d4e31b487d82af8"
+vpc_id = "vpc-05a9ae501a83def5c"
 private_subnet_ids = [
-  "subnet-0f5ff639ecb20c0fb",
-  "subnet-0521406bd082e7fdb",
+  "subnet-04832b92af6f46505",
+  "subnet-093be1e114d8d38d9"
 ]
-lambda_security_group_id = "sg-0a77869ecc6a87ac7"
-opensearch_endpoint = "vpc-taller-ia-bskhl3itnogp6tcae74pbh2lbe.us-east-1.es.amazonaws.com"
-opensearch_domain_arn = "arn:aws:es:us-east-1:013046900635:domain/taller-ia"
+lambda_security_group_id = "sg-0bb6783888d85bc68"
+opensearch_endpoint = "vpc-taller-rag-suxpeftnnyc7e2fxodbtrydn5m.us-east-1.es.amazonaws.com"
+opensearch_domain_arn = "arn:aws:es:us-east-1:471112840515:domain/taller-rag"
