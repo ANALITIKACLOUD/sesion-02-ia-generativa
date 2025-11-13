@@ -32,15 +32,57 @@ Cada alumno:
     ├── Genera embeddings con Bedrock
     └── Indexa en OpenSearch (índice separado)
 ```
+accountID: 013046900635
 
+usuario: [nombre].[apellido]
+
+password: Participante2025!
 ## Pre-requisitos (instructor)
 
-### 1. Levantar infraestructura compartida
+
+### 1. Clonar repositorio
+
+
+```bash
+git clone https://github.com/ANALITIKACLOUD/sesion-02-ia-generativa.git
+```
+```bash
+cd sesion-02-ia-generativa
+```
+
+### 2. Instalar Terraform
+
+
+#### 2.1. Descargar
+
+```bash
+wget https://releases.hashicorp.com/terraform/1.9.8/terraform_1.9.8_linux_amd64.zip
+```
+#### 2.1. Descomprimir
+```bash
+unzip terraform_1.9.8_linux_amd64.zip
+```
+#### 2.1. Mover a /usr/local/bin
+```bash
+sudo mv terraform /usr/local/bin/
+```
+#### 2.1. Verificar instalación
+```bash
+terraform version
+```
+### 3. Levantar infraestructura compartida
+
+
 ```bash
 cd shared/
+```
+```bash
 terraform init
+```
+```bash
 terraform apply
 ```
+
 
 Esto crea:
 - VPC con subnets privadas
@@ -51,44 +93,50 @@ Esto crea:
 
 ### 2. Capturar outputs
 ```bash
-terraform output -json > ../shared-outputs.json
+terraform output > outputs.txt
 ```
 
 ## Instrucciones para participantes
 
-### Setup inicial
+### 1. Clonar repositorio
+
+
 ```bash
+git clone https://github.com/ANALITIKACLOUD/sesion-02-ia-generativa.git
+```
+```bash
+cd sesion-02-ia-generativa
+```
+### 2. Instalar Terraform
 
-# 1. Acceder a cloud9
 
-# 2. Instalar Terraform
-# 1. Descargar versión más reciente
+#### 2.1. Descargar
+
+```bash
 wget https://releases.hashicorp.com/terraform/1.9.8/terraform_1.9.8_linux_amd64.zip
-
-# 2. Descomprimir
+```
+#### 2.2. Descomprimir
+```bash
 unzip terraform_1.9.8_linux_amd64.zip
-
-# 3. Mover a /usr/local/bin
+```
+#### 2.3. Mover a /usr/local/bin
+```bash
 sudo mv terraform /usr/local/bin/
-
-# 4. Verificar instalación
+```
+#### 2.4. Verificar instalación
+```bash
 terraform version
-
-# 1. Clonar repositorio
-git clone <repo-url>
-cd a/alumno
-
+```
 
 # 3. Configurar tu ID de alumno
-cd ../student
-export ALUMNO_ID="<nombre>-<apellido>"  # Cambiar según asignación todo minuscula
+
+export ALUMNO_ID="nombre-apellido"  # Cambiar por su nombre y apellido en minuscula
 
 # 4. Copiar archivo de variables
 cp terraform.tfvars.example terraform.tfvars
 
 # 5. Editar terraform.tfvars con tu ALUMNO_ID
-vim terraform.tfvars
-```
+ editar terraform.tfvars
 
 ### Desplegar infraestructura
 ```bash
@@ -99,23 +147,6 @@ terraform init -backend-config="key=alumnos/${ALUMNO_ID}/terraform.tfstate"
 terraform apply
 ```
 
-### Probar el RAG
-```bash
-# 1. Subir documento de prueba a tu bucket
-aws s3 cp sample-doc.txt s3://rag-${ALUMNO_ID}/documents/
-
-# 2. Invocar Lambda para indexar
-aws lambda invoke \
-  --function-name rag-lambda-${ALUMNO_ID} \
-  --payload '{"action": "index", "document": "sample-doc.txt"}' \
-  response.json
-
-# 3. Hacer una query
-aws lambda invoke \
-  --function-name rag-lambda-${ALUMNO_ID} \
-  --payload '{"action": "query", "question": "¿De qué trata el documento?"}' \
-  response.json
-```
 
 ### Limpieza
 ```bash
