@@ -32,7 +32,7 @@ Cada alumno:
     ├── Genera embeddings con Bedrock
     └── Indexa en OpenSearch (índice separado)
 ```
-accountID: 013046900635
+accountID: 471112840515
 
 usuario: [nombre].[apellido]
 
