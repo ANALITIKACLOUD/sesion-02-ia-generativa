@@ -65,7 +65,9 @@ resource "aws_iam_role_policy" "lambda_s3" {
         ]
         Resource = [
           aws_s3_bucket.documents.arn,
-          "${aws_s3_bucket.documents.arn}/*"
+          "${aws_s3_bucket.documents.arn}/*",
+          "arn:aws:s3:::rag-web-ia",
+          "arn:aws:s3:::rag-web-ia/*"
         ]
       }
     ]
