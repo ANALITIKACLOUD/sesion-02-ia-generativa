@@ -141,14 +141,23 @@ cp terraform.tfvars.example terraform.tfvars
 
 ### Desplegar infraestructura
 ```bash
+# Validar ALUMNO_ID (nombre-apellido)
+echo ${ALUMNO_ID}
+
 # Inicializar con tu alumno_id
 terraform init -backend-config="key=alumnos/${ALUMNO_ID}/terraform.tfstate"
 
 # Aplicar
 terraform apply
 ```
+Aceptar deploy:
+```bash
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
 
-
+  Enter a value: yes
+```
 ### Limpieza
 ```bash
 terraform destroy
