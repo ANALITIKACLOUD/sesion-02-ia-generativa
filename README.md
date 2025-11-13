@@ -1,29 +1,13 @@
-# Taller RAG con AWS - Arquitectura Serverless
+# Taller RAG con AWS - Arquitectura
 
 ## Objetivo
 Cada participante desplegará su propia infraestructura RAG (Retrieval Augmented Generation) usando Bedrock, Lambda, S3 y OpenSearch compartido.
 
 ## Arquitectura
 
+![Diagrama](images/arquitectura.jpeg)
+
 ```
-┌─────────────────────────────────────────────────────────┐
-│ VPC Compartida (desplegada por instructor)              │
-│                                                           │
-│  ┌──────────────────────────────────────────┐           │
-│  │ Subnet Privada                            │           │
-│  │                                            │           │
-│  │  Lambda alumno-01  ┐                     │           │
-│  │  Lambda alumno-02  ├─→ Security Group    │           │
-│  │  Lambda alumno-XX  ┘                     │           │
-│  │                                            │           │
-│  │  OpenSearch (compartido) ← SG            │           │
-│  └──────────────────────────────────────────┘           │
-│                                                           │
-│  VPC Endpoints (compartidos):                            │
-│  ├─ Bedrock Runtime (embeddings)                        │
-│  ├─ S3 Gateway                                          │
-│  └─ CloudWatch Logs                                     │
-└─────────────────────────────────────────────────────────┘
 
 Cada alumno:
 ├── S3 Bucket (rag-alumno-XX)
@@ -32,6 +16,8 @@ Cada alumno:
     ├── Genera embeddings con Bedrock
     └── Indexa en OpenSearch (índice separado)
 ```
+
+## Credenciales
 accountID: 471112840515
 
 usuario: [nombre].[apellido]
@@ -96,14 +82,25 @@ Esto crea:
 terraform output > outputs.txt
 ```
 
-## Instrucciones para participantes
+# Instrucciones para participantes
 
+Acceder a la consola de AWS con sus credenciales
+
+- Ir al servicio de Amazon SageMaker AI -> Studio -> Open Studio
+
+![Diagrama](images/imagen03.png)
+
+- Code Editor -> Busca tu nombre -> Run
+
+![Diagrama](images/imagen04.png)
 ### 1. Clonar repositorio
 
 
 ```bash
 git clone https://github.com/ANALITIKACLOUD/sesion-02-ia-generativa.git
 ```
+
+![Diagrama](images/imagen01.png)
 ```bash
 cd sesion-02-ia-generativa
 ```
@@ -128,25 +125,30 @@ sudo mv terraform /usr/local/bin/
 terraform version
 ```
 
-# 3. Configurar tu ID de alumno
+### 3. Configurar tu ID de alumno
 
 export ALUMNO_ID="nombre-apellido"  # Cambiar por su nombre y apellido en minuscula
 
-# 4. Copiar archivo de variables
+### 4. Copiar archivo de variables
+```bash
 cd alumno
+```
+```bash
 cp terraform.tfvars.example terraform.tfvars
-
-# 5. Editar terraform.tfvars con tu ALUMNO_ID
+```
+### 5. Editar terraform.tfvars con tu ALUMNO_ID
  editar terraform.tfvars
-
+![Diagrama](/images/imagen02.png)
 ### Desplegar infraestructura
 ```bash
 # Validar ALUMNO_ID (nombre-apellido)
 echo ${ALUMNO_ID}
-
+```
+```bash
 # Inicializar con tu alumno_id
 terraform init -backend-config="key=alumnos/${ALUMNO_ID}/terraform.tfstate"
-
+```
+```bash
 # Aplicar
 terraform apply
 ```
@@ -158,10 +160,7 @@ Do you want to perform these actions?
 
   Enter a value: yes
 ```
-### Limpieza
-```bash
-terraform destroy
-```
+
 
 ## Estructura del proyecto
 
